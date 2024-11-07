@@ -1,18 +1,21 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="styl-1">
-    <script type="text/javascript" src="java.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notatki</title>
+    <link rel="stylesheet" type="text/css" href="styl-1.css">
+    <script type="text/javascript" src="java.js" defer></script> <!-- "defer" zapewnia, że JS zostanie załadowany po załadowaniu HTML -->
 </head>
 <body>
     <div class="kontener">
         <h1>Notatki</h1>
         <div id="notes"></div>
-    <form action="blad" method="Post">
-        <input type="text" name="notatka"><br>
-        <input type="submit" value="zapisz">
-    
-    </form>
+        <form id="note-form">
+            <input type="text" id="note-input" name="notatka" placeholder="Wpisz notatkę"><br>
+            <input type="submit" value="Zapisz">
+        </form>
     </div>
 </body>
 </html>
+
