@@ -1,0 +1,27 @@
+Dodawanie klasy:
+-participant user
+
+Tworzenie ścieżek:
+-user->>browser: Write note and click save
+
+Tworzenie notatek:
+-Note right of browser: Browser capture...
+
+activate server- aktywacja klasy
+
+Otwieranie i zamykanie
+```mermaid
+
+```
+
+Działania diagramów:
+
+cecha aplikacji typu SPA — działają w tle, 
+dzięki czemu użytkownik ma płynniejsze doświadczenie podczas korzystania z aplikacji.
+
+ HTTP 302 (przekierowanie) po zapisaniu nowej notatki. 
+ Przeglądarka automatycznie podąża za tym przekierowaniem i ładuje stronę /notes (z pełną listą notatek).
+
+ Jak działa 06
+ Pokazuje dynamiczną aktualizację strony bez przeładowania, 
+ typową dla aplikacji SPA. Notatka jest zapisywana na serwerze, a przeglądarka otrzymuje dane w formacie JSON i natychmiast dodaje nową notatkę do listy, bez konieczności przeładowania całej strony.
