@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Header from './Header';
 
 const Buttons = (props) => {
   return <button onClick={props.handleClick}>{props.text}</button>;
@@ -16,7 +17,8 @@ const StatisticLines = (props) => {
     </tr>
   );
 };
-// miało byc props ale według mnie tak jest lepiej
+ 
+
 const Statistics = ({ good, neutral, bad }) => {
   if (!(good || neutral || bad)) {
     return <p>No feedback given</p>;
@@ -76,31 +78,46 @@ const App = () => {
     const randomIndex=Math.floor(Math.random()*anecdotes.length)
     setSelected(randomIndex);
   }
+
+  const Anecdote = (props) => {
+    return (
+      <div>
+        <p>{props.text}</p>
+        <p>has {props.votes} votes</p>
+      </div>
+    );
+  };
+
   return (
     <div>
-      <h2>Give feedback</h2>
+      
+      <Header text="Give feedback" />
       <Buttons handleClick={goodClicks} text="good" />
       <Buttons handleClick={neutralClicks} text="neutral" />
       <Buttons handleClick={badClicks} text="bad" />
-      <h2>Statistics</h2>
+      <Header text="Statistic" />
       <Statistics good={good} neutral={neutral} bad={bad} />
-      <h2>Anecdote of the day</h2>
-      <p>{anecdotes[selected]}</p>
-      <p>has {votes[selected]} votes</p>
-      <button onClick={handleVote}>Vote</button>
-      <button onClick={randomText}>next anecdotes</button>
-      <h2>Anecdote with the most votes</h2>
+
+      <Header text="Anecdote of the day" />
+      <Anecdote 
+      text={anecdotes[selected]} 
+      votes={votes[selected]} 
+      />
+      <Buttons handleClick={handleVote} text="Vote" />
+      <Buttons handleClick={randomText} text="next anecdotes" />
+      <Header text="Anecdote with the most votes" />
       {votes[maxVoteIndex]===0?(<p>No votes yet</p>
       ):(
-      <>
-      <p>{anecdotes[maxVoteIndex]}</p>
-      <p>has {votes[maxVoteIndex]} votes</p>
-      </>
+      <Anecdote 
+        text={anecdotes[maxVoteIndex]} 
+        votes={votes[maxVoteIndex]} 
+      />
       )}
     </div>
   );
 };
-
+// anetgdoty jako funkcje i buttony
+//
 export default App;
 
 
