@@ -33,6 +33,7 @@ const App = () => {
     setPersons(persons.concat(newPerson))
 
     setNewName('')
+    setNewNumber('')
   }
 
   return (
@@ -53,7 +54,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {persons.map(person =>
-          <li key={person.name}>{person.name}</li>
+          <li key={person.name}>{person.name}-{person.number}</li>
         )}
       </ul>
 

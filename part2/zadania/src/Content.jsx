@@ -8,7 +8,7 @@ const Content = ({ parts }) => {
       {parts.map(part => 
         <Part key={part.id} name={part.name} exercises={part.exercises} />
       )}
-      <h3>Total exercises: {totalExercises}</h3> {/* Wyświetlamy sumę ćwiczeń */}
+      <h3>Total exercises: {totalExercises}</h3>
     </div>
   );
 }
