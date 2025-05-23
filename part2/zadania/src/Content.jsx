@@ -1,4 +1,4 @@
-import Part from './Part';
+import Part from './Persons';
 
 const Content = ({ parts }) => {
   const totalExercises = parts.reduce((sum, part) => sum + part.exercises, 0);
