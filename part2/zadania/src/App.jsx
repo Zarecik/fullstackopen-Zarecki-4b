@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import personService from './persons'
+import personService from './persons'  // import modułu z backendem
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -20,14 +20,12 @@ const App = () => {
       number: newNumber,
     }
 
-    // Sprawdź czy już istnieje
     const alreadyExists = persons.some(person => person.name === newName)
     if (alreadyExists) {
       alert(`${newName} is already added to phonebook`)
       return
     }
 
-    // Wyślij do serwera
     personService
       .create(personObject)
       .then(returnedPerson => {
@@ -61,7 +59,6 @@ const App = () => {
 }
 
 export default App
-
 
 
 
