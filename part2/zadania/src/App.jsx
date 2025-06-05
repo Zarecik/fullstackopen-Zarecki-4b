@@ -15,24 +15,41 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    const personObject = {
-      name: newName,
-      number: newNumber,
-    }
+    const existingPerson = persons.find(person => person.name === newName)
 
-    const alreadyExists = persons.some(person => person.name === newName)
-    if (alreadyExists) {
-      alert(`${newName} is already added to phonebook`)
-      return
-    }
+    if (existingPerson) {
+      if (window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      )) {
+        const updatedPerson = { ...existingPerson, number: newNumber }
+        personService
+          .update(existingPerson.id, updatedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => 
+              person.id !== existingPerson.id ? person : returnedPerson
+            ))
+            setNewName('')
+            setNewNumber('')
+          })
+          .catch(error => {
+            alert(`Information of ${newName} has already been removed from server`)
+            setPersons(persons.filter(person => person.id !== existingPerson.id))
+          })
+      }
+    } else {
+      const personObject = {
+        name: newName,
+        number: newNumber,
+      }
 
-    personService
-      .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+    }
   }
 
   const handleDelete = (id, name) => {
@@ -75,6 +92,7 @@ const App = () => {
 }
 
 export default App
+
 
 
 
