@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import personService from './persons'  // import modułu z backendem
+import personService from './persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -35,6 +35,19 @@ const App = () => {
       })
   }
 
+  const handleDelete = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personService.remove(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+        .catch(() => {
+          alert(`Information of ${name} has already been removed from server`)
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -51,7 +64,10 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {persons.map(person =>
-          <li key={person.id}>{person.name} {person.number}</li>
+          <li key={person.id}>
+            {person.name} {person.number}
+            <button onClick={() => handleDelete(person.id, person.name)}>delete</button>
+          </li>
         )}
       </ul>
     </div>
