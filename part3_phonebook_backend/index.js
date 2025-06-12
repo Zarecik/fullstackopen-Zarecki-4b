@@ -1,10 +1,16 @@
 const express = require('express')
 const app = express()
 
-// Middleware do obsługi JSON w body
 app.use(express.json())
 
-// 3.7 – własny middleware do logowania żądań
+let persons = [
+  { id: "1", name: "Arto Hellas", number: "040-123456" },
+  { id: "2", name: "Ada Lovelace", number: "39-44-5323523" },
+  { id: "3", name: "Dan Abramov", number: "12-43-234345" },
+  { id: "4", name: "Mary Poppendieck", number: "39-23-6423122" }
+]
+
+// Middleware 3.7 - logger
 const requestLogger = (req, res, next) => {
   console.log('Method:', req.method)
   console.log('Path:  ', req.path)
@@ -14,20 +20,12 @@ const requestLogger = (req, res, next) => {
 }
 app.use(requestLogger)
 
-// Początkowe dane
-let persons = [
-  { id: "1", name: "Arto Hellas", number: "040-123456" },
-  { id: "2", name: "Ada Lovelace", number: "39-44-5323523" },
-  { id: "3", name: "Dan Abramov", number: "12-43-234345" },
-  { id: "4", name: "Mary Poppendieck", number: "39-23-6423122" }
-]
-
 // 3.1 – Zwraca listę osób
 app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
 
-// 3.2 – Info o liczbie osób i aktualnej dacie
+// 3.2 – Info o liczbie osób i dacie
 app.get('/info', (req, res) => {
   const count = persons.length
   const date = new Date()
@@ -73,7 +71,7 @@ app.post('/api/persons', (req, res) => {
   }
 
   const newPerson = {
-    id: (Math.random() * 100).toFixed(0), // uproszczone ID
+    id: (Math.random() * 100).toFixed(0),
     name: body.name,
     number: body.number
   }
@@ -82,9 +80,24 @@ app.post('/api/persons', (req, res) => {
   res.status(201).json(newPerson)
 })
 
+// 3.8 – Middleware obsługi błędów
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return res.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+app.use(errorHandler)
+
 // Uruchomienie serwera
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
 
