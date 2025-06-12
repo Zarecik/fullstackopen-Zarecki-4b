@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
 
-const persons = [
+// Dane telefonicznej książki — początkowo 4 wpisy
+let persons = [
   { 
     id: "1",
     name: "Arto Hellas", 
@@ -24,6 +25,12 @@ const persons = [
   }
 ]
 
+// 3.1: zwróć listę osób
+app.get('/api/persons', (req, res) => {
+  res.json(persons)
+})
+
+// 3.3: zwróć osobę po id
 app.get('/api/persons/:id', (req, res) => {
   const id = req.params.id
   const person = persons.find(p => p.id === id)
@@ -35,7 +42,7 @@ app.get('/api/persons/:id', (req, res) => {
   }
 })
 
-// nowy endpoint z zadania 3.2
+// 3.2: info o telefonicznej książce i aktualnym czasie
 app.get('/info', (req, res) => {
   const date = new Date()
   const entriesCount = persons.length
@@ -44,6 +51,19 @@ app.get('/info', (req, res) => {
     <p>Phonebook has info for ${entriesCount} people</p>
     <p>${date}</p>
   `)
+})
+
+// 3.4: usuń osobę po id
+app.delete('/api/persons/:id', (req, res) => {
+  const id = req.params.id
+
+  const personExists = persons.some(p => p.id === id)
+  if (!personExists) {
+    return res.status(404).json({ error: 'Person not found' })
+  }
+
+  persons = persons.filter(p => p.id !== id)
+  res.status(204).end()
 })
 
 const PORT = 3001
