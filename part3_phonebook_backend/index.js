@@ -49,9 +49,12 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end()
 })
 
-// Endpoint 3.5 – Dodaje nową osobę
+// Endpoint 3.5 + 3.6 – Dodaje nową osobę i loguje dane
 app.post('/api/persons', (req, res) => {
   const body = req.body
+
+  // 3.6 – logowanie danych z żądania
+  console.log(body)
 
   if (!body.name || !body.number) {
     return res.status(400).json({ error: 'name or number is missing' })
@@ -63,7 +66,7 @@ app.post('/api/persons', (req, res) => {
   }
 
   const newPerson = {
-    id: (Math.random() * 100).toFixed(0),
+    id: (Math.random() * 100).toFixed(0), // mniejsze id
     name: body.name,
     number: body.number
   }
