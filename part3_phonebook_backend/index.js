@@ -4,6 +4,16 @@ const app = express()
 // Middleware do obsługi JSON w body
 app.use(express.json())
 
+// 3.7 – własny middleware do logowania żądań
+const requestLogger = (req, res, next) => {
+  console.log('Method:', req.method)
+  console.log('Path:  ', req.path)
+  console.log('Body:  ', req.body)
+  console.log('---')
+  next()
+}
+app.use(requestLogger)
+
 // Początkowe dane
 let persons = [
   { id: "1", name: "Arto Hellas", number: "040-123456" },
@@ -12,19 +22,19 @@ let persons = [
   { id: "4", name: "Mary Poppendieck", number: "39-23-6423122" }
 ]
 
-// Endpoint 3.1 – Zwraca listę osób
+// 3.1 – Zwraca listę osób
 app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
 
-// Endpoint 3.2 – Info o liczbie osób i dacie
+// 3.2 – Info o liczbie osób i aktualnej dacie
 app.get('/info', (req, res) => {
   const count = persons.length
   const date = new Date()
   res.send(`<p>Phonebook has info for ${count} people</p><p>${date}</p>`)
 })
 
-// Endpoint 3.3 – Zwraca jedną osobę po id
+// 3.3 – Zwraca jedną osobę po id
 app.get('/api/persons/:id', (req, res) => {
   const id = req.params.id
   const person = persons.find(p => p.id === id)
@@ -36,7 +46,7 @@ app.get('/api/persons/:id', (req, res) => {
   }
 })
 
-// Endpoint 3.4 – Usuwa osobę po id
+// 3.4 – Usuwa osobę po id
 app.delete('/api/persons/:id', (req, res) => {
   const id = req.params.id
   const personExists = persons.some(p => p.id === id)
@@ -49,12 +59,9 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end()
 })
 
-// Endpoint 3.5 + 3.6 – Dodaje nową osobę i loguje dane
+// 3.5 – Dodaje nową osobę
 app.post('/api/persons', (req, res) => {
   const body = req.body
-
-  // 3.6 – logowanie danych z żądania
-  console.log(body)
 
   if (!body.name || !body.number) {
     return res.status(400).json({ error: 'name or number is missing' })
@@ -66,7 +73,7 @@ app.post('/api/persons', (req, res) => {
   }
 
   const newPerson = {
-    id: (Math.random() * 100).toFixed(0), // mniejsze id
+    id: (Math.random() * 100).toFixed(0), // uproszczone ID
     name: body.name,
     number: body.number
   }
@@ -80,3 +87,4 @@ const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
