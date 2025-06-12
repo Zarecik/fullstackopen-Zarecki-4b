@@ -24,9 +24,15 @@ const persons = [
   }
 ]
 
-// endpoint z listą osób z 3.1
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
+app.get('/api/persons/:id', (req, res) => {
+  const id = req.params.id
+  const person = persons.find(p => p.id === id)
+
+  if (person) {
+    res.json(person)
+  } else {
+    res.status(404).end()
+  }
 })
 
 // nowy endpoint z zadania 3.2
